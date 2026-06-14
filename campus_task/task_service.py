@@ -3,8 +3,8 @@
 v0.3.0 新增：搜索关键字、显示逾期任务、按条件筛选
 """
 from datetime import datetime
-from lab2.task_model import create_task, get_next_task_id
-from lab2.task_storage import load_tasks, save_tasks
+from campus_task.task_model import create_task, get_next_task_id
+from campus_task.task_storage import load_tasks, save_tasks
 
 
 def add_new_task(title: str, deadline: str = "", priority: str = "medium") -> dict:
