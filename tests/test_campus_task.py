@@ -27,8 +27,8 @@ from campus_task.task_service import (
 def test_add_task_success(monkeypatch, tmp_path):
     """验证 add_new_task 返回正确的 dict，且持久化到文件"""
     data_file = tmp_path / "tasks.json"
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     task = add_new_task("复习高数")
     assert task["title"] == "复习高数"
@@ -42,8 +42,8 @@ def test_add_task_success(monkeypatch, tmp_path):
 def test_add_empty_title_fails(monkeypatch, tmp_path):
     """验证空标题任务仍被创建（JSON存储无校验），未来可扩展拒绝"""
     data_file = tmp_path / "tasks.json"
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     # 当前实现接受空标题（符合 v0.2 行为），这是可接受的边界行为
     task = create_task(1, "")
@@ -57,8 +57,8 @@ def test_add_empty_title_fails(monkeypatch, tmp_path):
 def test_list_empty_tasks(monkeypatch, tmp_path):
     """验证空列表返回 []"""
     data_file = tmp_path / "tasks.json"
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     tasks = get_all_tasks()
     assert tasks == []
@@ -70,8 +70,8 @@ def test_list_empty_tasks(monkeypatch, tmp_path):
 def test_done_existing_task(monkeypatch, tmp_path):
     """验证 mark_task_done 返回 'done'，且状态持久化"""
     data_file = tmp_path / "tasks.json"
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     add_new_task("测试任务")
     result = mark_task_done(1)
@@ -87,8 +87,8 @@ def test_done_existing_task(monkeypatch, tmp_path):
 def test_done_nonexistent_task(monkeypatch, tmp_path):
     """验证 mark_task_done 对不存在的 ID 返回 'not_found'"""
     data_file = tmp_path / "tasks.json"
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     result = mark_task_done(999)
     assert result == "not_found"
@@ -100,8 +100,8 @@ def test_done_nonexistent_task(monkeypatch, tmp_path):
 def test_task_id_increment(monkeypatch, tmp_path):
     """验证连续添加任务时编号递增"""
     data_file = tmp_path / "tasks.json"
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     t1 = add_new_task("任务1")
     t2 = add_new_task("任务2")
@@ -117,8 +117,8 @@ def test_task_id_increment(monkeypatch, tmp_path):
 def test_json_file_auto_creation(monkeypatch, tmp_path):
     """验证 tasks.json 不存在时 load_tasks 不崩溃，返回空列表"""
     data_file = tmp_path / "nonexistent.json"
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     tasks = load_tasks()
     assert isinstance(tasks, list)
@@ -132,8 +132,8 @@ def test_corrupted_json(monkeypatch, tmp_path, capsys):
     """验证 JSON 损坏时打印警告并返回空列表，不崩溃"""
     data_file = tmp_path / "corrupt.json"
     data_file.write_text("this is not valid json {{{", encoding="utf-8")
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     tasks = load_tasks()
     assert tasks == []
@@ -147,8 +147,8 @@ def test_corrupted_json(monkeypatch, tmp_path, capsys):
 def test_no_double_done(monkeypatch, tmp_path):
     """验证对已完成的 ID 返回 'already_done'"""
     data_file = tmp_path / "tasks.json"
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     add_new_task("已完成的任务")
     mark_task_done(1)
@@ -162,8 +162,8 @@ def test_no_double_done(monkeypatch, tmp_path):
 def test_task_persistence(monkeypatch, tmp_path):
     """验证 save_tasks 后 load_tasks 能读回数据"""
     data_file = tmp_path / "tasks.json"
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     save_tasks([{"id": 1, "title": "持久化测试", "status": "pending", "created_at": "2025-01-01 00:00:00"}])
     tasks = load_tasks()
@@ -178,8 +178,8 @@ def test_empty_json_file(monkeypatch, tmp_path):
     """验证空 JSON 文件返回空列表"""
     data_file = tmp_path / "empty.json"
     data_file.write_text("", encoding="utf-8")
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     tasks = load_tasks()
     assert tasks == []
@@ -192,8 +192,8 @@ def test_empty_json_file(monkeypatch, tmp_path):
 def test_search_tasks(monkeypatch, tmp_path):
     """验证按关键字搜索返回匹配任务"""
     data_file = tmp_path / "tasks.json"
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     add_new_task("复习高等数学")
     add_new_task("完成软件工程实验")
@@ -206,8 +206,8 @@ def test_search_tasks(monkeypatch, tmp_path):
 def test_search_no_match(monkeypatch, tmp_path):
     """验证搜索无结果时返回空列表"""
     data_file = tmp_path / "tasks.json"
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     add_new_task("复习高数")
     results = search_tasks("不存在的")
@@ -217,8 +217,8 @@ def test_search_no_match(monkeypatch, tmp_path):
 def test_overdue_tasks(monkeypatch, tmp_path):
     """验证逾期任务检测"""
     data_file = tmp_path / "tasks.json"
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     add_new_task("已过期任务", "2020-01-01")
     add_new_task("未来任务", "2099-12-31")
@@ -231,8 +231,8 @@ def test_overdue_tasks(monkeypatch, tmp_path):
 def test_add_with_deadline_and_priority(monkeypatch, tmp_path):
     """验证添加带截止日期和优先级的任务"""
     data_file = tmp_path / "tasks.json"
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     task = add_new_task("紧急任务", "2026-06-20", "high")
     assert task["deadline"] == "2026-06-20"
@@ -242,8 +242,8 @@ def test_add_with_deadline_and_priority(monkeypatch, tmp_path):
 def test_filter_by_status(monkeypatch, tmp_path):
     """验证按状态筛选任务"""
     data_file = tmp_path / "tasks.json"
-    monkeypatch.setattr("lab2.task_storage.DATA_FILE", str(data_file))
-    monkeypatch.setattr("lab2.task_storage.EXAMPLE_FILE", "")
+    monkeypatch.setattr("campus_task.task_storage.DATA_FILE", str(data_file))
+    monkeypatch.setattr("campus_task.task_storage.EXAMPLE_FILE", "")
 
     add_new_task("待办任务")
     add_new_task("另一个待办")
