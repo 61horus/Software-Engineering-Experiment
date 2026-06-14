@@ -50,7 +50,9 @@ def get_tasks_by_status(status: str) -> list:
 def export_to_csv(filepath: str) -> int:
     """导出所有任务为 CSV 文件，返回导出行数（不含表头）"""
     import csv
+    import os
     tasks = load_tasks()
+    os.makedirs(os.path.dirname(filepath) or ".", exist_ok=True)
     with open(filepath, "w", newline="", encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=["id", "title", "status", "deadline", "priority", "created_at"])
         writer.writeheader()
