@@ -1,0 +1,6 @@
+*.json
+__pycache__/
+*.pyc
+*.docx
+*.doc
+*.log
