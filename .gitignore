@@ -3,4 +3,5 @@ __pycache__/
 *.pyc
 *.docx
 *.doc
-*.log
+# 仅忽略运行时生成的日志文件，示例日志可提交
+campus_task.log

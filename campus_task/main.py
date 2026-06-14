@@ -1,12 +1,13 @@
 """
 CampusTask v0.4.0 — 可发布命令行工具
-支持 argparse、--version、错误日志
+支持 argparse、--version、错误日志、CSV导出
 用法：
   python -m campus_task add "任务标题" [--deadline DATE] [--priority high|medium|low]
   python -m campus_task list [pending|done]
   python -m campus_task done <编号>
   python -m campus_task search <关键字>
   python -m campus_task overdue
+  python -m campus_task export <文件路径.csv>
   python -m campus_task --version
 """
 import argparse
@@ -25,7 +26,8 @@ logging.basicConfig(
 
 from campus_task.task_service import (
     add_new_task, get_all_tasks, mark_task_done,
-    search_tasks, get_overdue_tasks, get_tasks_by_status
+    search_tasks, get_overdue_tasks, get_tasks_by_status,
+    export_to_csv
 )
 
 VERSION = "0.4.0"
@@ -79,6 +81,10 @@ def main():
     # overdue
     sub.add_parser("overdue", help="逾期任务")
 
+    # export
+    p_export = sub.add_parser("export", help="导出CSV")
+    p_export.add_argument("filepath", help="导出文件路径（如 tasks.csv）")
+
     args = parser.parse_args()
 
     if args.command is None:
@@ -115,6 +121,11 @@ def main():
         elif args.command == "overdue":
             overdue_tasks = get_overdue_tasks()
             print_task_list(overdue_tasks)
+
+        elif args.command == "export":
+            count = export_to_csv(args.filepath)
+            print(f"📊 已导出 {count} 条任务到 {args.filepath}")
+            logging.info(f"export {count} tasks to {args.filepath}")
 
     except Exception as e:
         logging.error(f"执行命令 {args.command} 时出错: {e}")

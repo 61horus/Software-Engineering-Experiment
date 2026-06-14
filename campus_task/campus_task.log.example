@@ -1,0 +1,7 @@
+2026-06-14 14:26:30,123 [INFO] add task [1] 复习软件工程
+2026-06-14 14:26:35,456 [INFO] done task [1]
+2026-06-14 14:26:40,789 [ERROR] 执行命令 done 时出错: invalid literal for int() with base 10: 'abc'
+Traceback (most recent call last):
+  File "campus_task\main.py", line 121, in main
+    ...
+ValueError: invalid literal for int() with base 10: 'abc'

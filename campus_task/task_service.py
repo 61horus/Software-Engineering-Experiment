@@ -47,6 +47,25 @@ def get_tasks_by_status(status: str) -> list:
     return [t for t in tasks if t["status"] == status]
 
 
+def export_to_csv(filepath: str) -> int:
+    """导出所有任务为 CSV 文件，返回导出行数（不含表头）"""
+    import csv
+    tasks = load_tasks()
+    with open(filepath, "w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=["id", "title", "status", "deadline", "priority", "created_at"])
+        writer.writeheader()
+        for t in tasks:
+            writer.writerow({
+                "id": t["id"],
+                "title": t["title"],
+                "status": t["status"],
+                "deadline": t.get("deadline", ""),
+                "priority": t.get("priority", "medium"),
+                "created_at": t["created_at"]
+            })
+    return len(tasks)
+
+
 def mark_task_done(task_id: int) -> str:
     """
     将指定任务标记为完成。
