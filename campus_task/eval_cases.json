@@ -1,0 +1,12 @@
+[
+  {"input": "帮我添加一个复习软件工程的任务", "expected_action": "add_task"},
+  {"input": "列出我还没完成的任务", "expected_action": "list_tasks"},
+  {"input": "把第2个任务标记为完成", "expected_action": "done_task"},
+  {"input": "添加明天的软件工程实验报告", "expected_action": "add_task"},
+  {"input": "还有什么任务没做", "expected_action": "list_tasks"},
+  {"input": "删除所有任务", "expected_action": "delete_all"},
+  {"input": "加一个复习高数的任务", "expected_action": "add_task"},
+  {"input": "完成第1个任务", "expected_action": "done_task"},
+  {"input": "还有哪些待办", "expected_action": "list_tasks"},
+  {"input": "帮我添加一个任务", "expected_action": "add_task"}
+]
