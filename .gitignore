@@ -1,4 +1,4 @@
-*.json
+tasks.json
 __pycache__/
 *.pyc
 *.docx
