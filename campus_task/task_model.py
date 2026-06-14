@@ -1,0 +1,24 @@
+"""
+任务数据模型层
+定义 Task 数据结构及其创建工厂函数
+"""
+from datetime import datetime
+
+
+def create_task(task_id: int, title: str, deadline: str = "", priority: str = "medium") -> dict:
+    """创建一个新任务字典（状态默认为 pending，支持截止日期和优先级）"""
+    return {
+        "id": task_id,
+        "title": title,
+        "status": "pending",
+        "deadline": deadline,       # 格式 YYYY-MM-DD，空字符串表示无截止日期
+        "priority": priority,       # high / medium / low
+        "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+
+
+def get_next_task_id(tasks: list) -> int:
+    """根据现有任务列表计算下一个可用编号"""
+    if not tasks:
+        return 1
+    return max(task["id"] for task in tasks) + 1
