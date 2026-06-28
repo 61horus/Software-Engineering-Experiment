@@ -10,7 +10,7 @@
 
 CampusTask 是一个命令行校园任务管理工具，支持添加、查看、完成、搜索、导出课程作业和实验报告等任务。数据以 JSON 格式持久化，程序重启不丢失。
 
-**版本**：v0.4.0
+**版本**：v0.5.0
 
 ## 仓库结构
 
@@ -96,7 +96,7 @@ python -m pytest tests/ -v
 | 实验一 | 需求分析 & 最小可用产品 | `campus_task/main.py` (初始版) | `campus_task/README.md` |
 | 实验二 | 模块化重构 | `campus_task/task_model.py` 等4文件 | `实验交付物/实验二_模块关系图.md` |
 | 实验三 | pytest 测试 | `tests/test_campus_task.py` | `实验交付物/实验三_需求与测试用例对应表.md` |
-| 实验四 | Git 协作（暂缓） | — | — |
+| 实验四 | Git 协作与版本控制 | 全仓库 commit / branch / merge | `实验交付物/实验四_Git协作与版本控制.md` |
 | 实验五 | 需求工程 & 迭代 | `campus_task/task_service.py` | `实验交付物/实验五_变更请求表.md` |
 | 实验六 | CI/GitHub Actions | `.github/workflows/test.yml` | `实验交付物/实验六_CI配置说明.md` |
 | 实验七 | 发布 & 运维 | `campus_task/main.py` (argparse版) | `实验交付物/实验七_Bug报告与修复.md` |

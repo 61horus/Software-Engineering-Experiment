@@ -1,10 +1,17 @@
-# CampusTask 用户手册 (v0.4.0)
+# CampusTask 用户手册 (v0.5.0)
 
 ## 快速开始
 
 ```bash
-# 添加任务
-python -m campus_task add "复习软件工程" --deadline 2026-06-20 --priority high
+# 添加任务（基础）
+python -m campus_task add "复习软件工程"
+
+# 添加任务（完整参数）
+python -m campus_task add "复习软件工程" \
+    --deadline 2026-06-20 \
+    --priority high \
+    --tags "软工,复习" \
+    --category "考试"
 
 # 查看所有任务
 python -m campus_task list
@@ -20,6 +27,9 @@ python -m campus_task search 软件工程
 
 # 查看逾期任务
 python -m campus_task overdue
+
+# 导出 CSV
+python -m campus_task export tasks.csv
 
 # 查看版本
 python -m campus_task --version
