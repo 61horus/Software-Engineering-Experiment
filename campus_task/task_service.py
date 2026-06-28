@@ -7,10 +7,11 @@ from campus_task.task_model import create_task, get_next_task_id
 from campus_task.task_storage import load_tasks, save_tasks
 
 
-def add_new_task(title: str, deadline: str = "", priority: str = "medium", tags: str = "") -> dict:
+def add_new_task(title: str, deadline: str = "", priority: str = "medium",
+                 tags: str = "", category: str = "general") -> dict:
     """添加新任务并持久化，返回创建的任务"""
     tasks = load_tasks()
-    new_task = create_task(get_next_task_id(tasks), title, deadline, priority, tags)
+    new_task = create_task(get_next_task_id(tasks), title, deadline, priority, tags, category)
     tasks.append(new_task)
     save_tasks(tasks)
     return new_task
@@ -54,7 +55,8 @@ def export_to_csv(filepath: str) -> int:
     tasks = load_tasks()
     os.makedirs(os.path.dirname(filepath) or ".", exist_ok=True)
     with open(filepath, "w", newline="", encoding="utf-8-sig") as f:
-        writer = csv.DictWriter(f, fieldnames=["id", "title", "status", "deadline", "priority", "tags", "created_at"])
+        writer = csv.DictWriter(f, fieldnames=["id", "title", "status", "deadline",
+                                                "priority", "category", "tags", "created_at"])
         writer.writeheader()
         for t in tasks:
             writer.writerow({
@@ -63,6 +65,7 @@ def export_to_csv(filepath: str) -> int:
                 "status": t["status"],
                 "deadline": t.get("deadline", ""),
                 "priority": t.get("priority", "medium"),
+                "category": t.get("category", "general"),
                 "tags": ", ".join(t.get("tags", [])),
                 "created_at": t["created_at"]
             })

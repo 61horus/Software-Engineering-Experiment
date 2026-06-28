@@ -1,8 +1,9 @@
 """
-CampusTask v0.4.0 — 可发布命令行工具
-支持 argparse、--version、错误日志、CSV导出
+CampusTask v0.5.0 — 可发布命令行工具
+支持 argparse、--version、错误日志、CSV导出、标签和分类
 用法：
   python -m campus_task add "任务标题" [--deadline DATE] [--priority high|medium|low]
+        [--tags "标签1,标签2"] [--category general|作业|实验|考试|其他]
   python -m campus_task list [pending|done]
   python -m campus_task done <编号>
   python -m campus_task search <关键字>
@@ -30,7 +31,7 @@ from campus_task.task_service import (
     export_to_csv
 )
 
-VERSION = "0.4.0"
+VERSION = "0.5.0"
 
 
 def print_task_list(tasks):
@@ -46,6 +47,7 @@ def print_task_list(tasks):
         print(f"  [{t['id']}] {icon} {t['title']}")
         print(f"      状态: {t['status']}  |  "
               f"优先级: {t.get('priority','-')}  |  "
+              f"分类: {t.get('category','-')}  |  "
               f"截止: {t.get('deadline') or '无'}")
         if t.get("tags"):
             print(f"      标签: {', '.join(t['tags'])}")
@@ -68,6 +70,8 @@ def main():
     p_add.add_argument("--deadline", default="", help="截止日期 YYYY-MM-DD")
     p_add.add_argument("--priority", default="medium", choices=["high", "medium", "low"], help="优先级")
     p_add.add_argument("--tags", default="", help="任务标签，多个用逗号分隔")
+    p_add.add_argument("--category", default="general",
+                       choices=["general", "作业", "实验", "考试", "其他"], help="任务分类")
 
     # list
     p_list = sub.add_parser("list", help="列出任务")
@@ -96,7 +100,8 @@ def main():
 
     try:
         if args.command == "add":
-            task = add_new_task(args.title, args.deadline, args.priority, args.tags)
+            task = add_new_task(args.title, args.deadline, args.priority,
+                                args.tags, args.category)
             print(f"✅ 任务已添加：[{task['id']}] {task['title']}")
             logging.info(f"add task [{task['id']}] {task['title']}")
 
