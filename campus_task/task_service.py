@@ -7,10 +7,10 @@ from campus_task.task_model import create_task, get_next_task_id
 from campus_task.task_storage import load_tasks, save_tasks
 
 
-def add_new_task(title: str, deadline: str = "", priority: str = "medium") -> dict:
+def add_new_task(title: str, deadline: str = "", priority: str = "medium", category: str = "general") -> dict:
     """添加新任务并持久化，返回创建的任务"""
     tasks = load_tasks()
-    new_task = create_task(get_next_task_id(tasks), title, deadline, priority)
+    new_task = create_task(get_next_task_id(tasks), title, deadline, priority, category)
     tasks.append(new_task)
     save_tasks(tasks)
     return new_task

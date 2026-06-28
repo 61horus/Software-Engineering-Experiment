@@ -46,6 +46,7 @@ def print_task_list(tasks):
         print(f"  [{t['id']}] {icon} {t['title']}")
         print(f"      状态: {t['status']}  |  "
               f"优先级: {t.get('priority','-')}  |  "
+              f"分类: {t.get('category','-')}  |  "
               f"截止: {t.get('deadline') or '无'}")
         print(f"      创建时间: {t['created_at']}")
     print(f"{'='*60}\n")
@@ -65,6 +66,8 @@ def main():
     p_add.add_argument("title", help="任务标题")
     p_add.add_argument("--deadline", default="", help="截止日期 YYYY-MM-DD")
     p_add.add_argument("--priority", default="medium", choices=["high", "medium", "low"], help="优先级")
+    p_add.add_argument("--category", default="general",
+                       choices=["general", "作业", "实验", "考试", "其他"], help="任务分类")
 
     # list
     p_list = sub.add_parser("list", help="列出任务")
@@ -93,7 +96,7 @@ def main():
 
     try:
         if args.command == "add":
-            task = add_new_task(args.title, args.deadline, args.priority)
+            task = add_new_task(args.title, args.deadline, args.priority, args.category)
             print(f"✅ 任务已添加：[{task['id']}] {task['title']}")
             logging.info(f"add task [{task['id']}] {task['title']}")
 
